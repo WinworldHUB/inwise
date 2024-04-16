@@ -8,13 +8,13 @@ export type Member = {
     country: string;
     phone: string;
     city: string;
-    bankDetails: BankDetails;
 }
 
 
 export type Company =  {
     id: string;
     name: string;
+    memberId: string;
     address: string;
     phone: string;
 }
@@ -41,6 +41,7 @@ export type Invoice = {
 
 export type BankDetails = {
     id: number;
+    memberId: string;
     bankName: string;
     accountNumber: string;
 }
