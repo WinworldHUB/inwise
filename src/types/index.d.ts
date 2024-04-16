@@ -1,5 +1,5 @@
 export type Member = {
-    id: number;
+    id: string;
     name: string;
     email: string;
     companyName: string;
@@ -12,7 +12,7 @@ export type Member = {
 }
 
 export type Item = {
-    id: number;
+    id: string;
     name: string;
     price: number;
     quantity: number;
@@ -20,10 +20,12 @@ export type Item = {
 }
 
 export type Invoice = {
-    id: number;
+    id: string;
+    invoiceNumber: string;
     date: string;
     dueDate: string;
-    member: Member;
+    billedBy: Member;
+    billedTo: Member;
     items: Item[];
     total: number;
     status: string;
