@@ -7,9 +7,10 @@ import {
   updateMember,
   deleteMember,
 } from "../models/member";
+import { Member } from "../types";
 
 export const getAllMembersHandler: RequestHandler = (req, res, next) => {
-  const members = getAllMembers();
+  const members: Member[] = getAllMembers();
   if (!members) {
     res.status(500).json({ message: "No members found" });
   }
@@ -17,7 +18,8 @@ export const getAllMembersHandler: RequestHandler = (req, res, next) => {
 };
 
 export const getMemberHandler: RequestHandler = (req, res, next) => {
-  const id = req.params.id;
+  const id:string = req.params.id;
+
   if (!id) {
     res.status(400).json({ message: "Member ID is required" });
   }
@@ -29,7 +31,7 @@ export const getMemberHandler: RequestHandler = (req, res, next) => {
 };
 
 export const createMemberHandler: RequestHandler = (req, res, next) => {
-  const member = req.body;
+  const member: Member = req.body;
   if (!member) {
     res.status(400).json({ message: "Member is required" });
   }
@@ -38,8 +40,11 @@ export const createMemberHandler: RequestHandler = (req, res, next) => {
 };
 
 export const updateMemberHandler: RequestHandler = (req, res, next) => {
-  const id = req.params.id;
-  const member = req.body;
+
+  const id:string = req.params.id;
+
+  const member:Member = req.body;
+
   if (!id) {
     res.status(400).json({ message: "Valid member ID is required" });
   }
