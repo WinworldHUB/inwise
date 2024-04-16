@@ -2,13 +2,21 @@ export type Member = {
     id: string;
     name: string;
     email: string;
-    companyName: string;
+    company: Company;
     address: string;
     industry: string;
     country: string;
     phone: string;
     city: string;
     bankDetails: BankDetails;
+}
+
+
+export type Company =  {
+    id: string;
+    name: string;
+    address: string;
+    phone: string;
 }
 
 export type Item = {
