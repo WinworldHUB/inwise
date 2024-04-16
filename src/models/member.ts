@@ -1,8 +1,8 @@
 import { Member } from "../types";
 
-const Members: Member[] = [];
+export const Members: Member[] = [];
 
-export const getMembers = (): Member[] => Members;
+export const getAllMembers = (): Member[] => Members;
 
 export const getMember = (id: string): Member | undefined => {
   if (!id) {
