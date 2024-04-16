@@ -34,5 +34,27 @@ export const createMemberHandler: RequestHandler = (req, res, next) => {
     res.status(400).json({ message: "Member is required" });
   }
   createMember(member);
-  res.status(201).json({ message:"Member created successfully", member });
+  res.status(201).json({ message: "Member created successfully", member });
+};
+
+export const updateMemberHandler: RequestHandler = (req, res, next) => {
+  const id = req.params.id;
+  const member = req.body;
+  if (!id) {
+    res.status(400).json({ message: "Valid member ID is required" });
+  }
+  if (!member) {
+    res.status(400).json({ message: "Member is required" });
+  }
+  updateMember(id, member);
+  res.status(200).json({ message: "Member updated successfully", member });
+};
+
+export const deleteMemberHandler: RequestHandler = (req, res, next) => {
+  const id = req.params.id;
+  if (!id) {
+    res.status(400).json({ message: "Valid member ID is required" });
+  }
+  deleteMember(id);
+  res.status(200).json({ message: "Member deleted successfully" });
 };
