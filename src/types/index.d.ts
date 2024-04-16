@@ -5,9 +5,9 @@ export type Member = {
     company: Company;
     address: string;
     industry: string;
-    country: string;
-    phone: string;
-    city: string;
+    country?: string;
+    phone?: string;
+    city?: string;
 }
 
 
@@ -16,7 +16,7 @@ export type Company =  {
     name: string;
     memberId: string;
     address: string;
-    phone: string;
+    phone?: string;
 }
 
 export type Item = {
