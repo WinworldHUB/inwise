@@ -8,7 +8,7 @@ import {
 } from "../models/invoice";
 import { Invoice } from "../types";
 
-export const getAllInvoicessHandler: RequestHandler = (req, res, next) => {
+export const getAllInvoicesHandler: RequestHandler = (req, res, next) => {
   const Invoicess: Invoice[] = getAllInvoices();
   if (!Invoicess) {
     res.status(500).json({ message: "No Invoicess found" });
@@ -16,7 +16,7 @@ export const getAllInvoicessHandler: RequestHandler = (req, res, next) => {
   res.status(200).json(Invoicess);
 };
 
-export const getInvoicesHandler: RequestHandler = (req, res, next) => {
+export const getInvoiceHandler: RequestHandler = (req, res, next) => {
   const id:string = req.params.id;
 
   if (!id) {
@@ -29,7 +29,7 @@ export const getInvoicesHandler: RequestHandler = (req, res, next) => {
   res.status(200).json(Invoices);
 };
 
-export const createInvoicesHandler: RequestHandler = (req, res, next) => {
+export const createInvoiceHandler: RequestHandler = (req, res, next) => {
   const Invoices: Invoice = req.body;
   if (!Invoices) {
     res.status(400).json({ message: "Invoices is required" });
@@ -38,7 +38,7 @@ export const createInvoicesHandler: RequestHandler = (req, res, next) => {
   res.status(201).json({ message: "Invoices created successfully", Invoices });
 };
 
-export const updateInvoicesHandler: RequestHandler = (req, res, next) => {
+export const updateInvoiceHandler: RequestHandler = (req, res, next) => {
 
   const id:string = req.params.id;
 
@@ -54,7 +54,7 @@ export const updateInvoicesHandler: RequestHandler = (req, res, next) => {
   res.status(200).json({ message: "Invoices updated successfully", Invoices });
 };
 
-export const deleteInvoicesHandler: RequestHandler = (req, res, next) => {
+export const deleteInvoiceHandler: RequestHandler = (req, res, next) => {
   const id = req.params.id;
   if (!id) {
     res.status(400).json({ message: "Valid Invoices ID is required" });

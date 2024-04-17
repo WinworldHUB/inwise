@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { memberRouter } from './routes/member-routes';
+import { InvoiceRouter } from './routes/invoice-routes';
 
 
 
@@ -33,7 +34,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use('/members', memberRouter);
-
+app.use("/invoices", InvoiceRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on port http://localhost:${PORT}`);
 });
