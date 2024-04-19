@@ -1,0 +1,15 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-inwise-staging-99365-authRole",
+      "UnauthRoleArn": "arn:aws:iam::334970244801:role/amplify-inwise-staging-99365-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::334970244801:role/amplify-inwise-staging-99365-authRole",
+      "Region": "ap-south-1",
+      "DeploymentBucketName": "amplify-inwise-staging-99365-deployment",
+      "UnauthRoleName": "amplify-inwise-staging-99365-unauthRole",
+      "StackName": "amplify-inwise-staging-99365",
+      "StackId": "arn:aws:cloudformation:ap-south-1:334970244801:stack/amplify-inwise-staging-99365/2417d230-fc9d-11ee-8958-0a4ef7b5fb8f",
+      "AmplifyAppId": "d1y77e1uf37p0z"
+    }
+  }
+}
