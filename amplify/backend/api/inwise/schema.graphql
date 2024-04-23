@@ -1,0 +1,13 @@
+enum CompanyRole {
+  ADMIN
+  USER
+}
+
+type Member @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  isActive: Boolean!
+  role: CompanyRole!
+  email: AWSEmail!
+  phone: AWSPhone
+}

@@ -1,1 +1,68 @@
-{}
+{
+  "api": {
+    "inwise": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        }
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync"
+    }
+  },
+  "auth": {
+    "inwise": {
+      "customAuth": false,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "serviceType": "imported"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_auth_inwise_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "inwise"
+        }
+      ]
+    },
+    "AMPLIFY_auth_inwise_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "inwise"
+        }
+      ]
+    },
+    "AMPLIFY_auth_inwise_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "inwise"
+        }
+      ]
+    },
+    "AMPLIFY_auth_inwise_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "inwise"
+        }
+      ]
+    }
+  }
+}

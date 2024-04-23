@@ -1,0 +1,19 @@
+projects:
+  inwise:
+    schemaPath: amplify/backend/api/inwise/build/schema.graphql
+    includes:
+      - src/graphql/**/*.ts
+    excludes:
+      - ./amplify/**
+      - src/awsApis.ts
+    extensions:
+      amplify:
+        codeGenTarget: typescript
+        generatedFileName: src/awsApis.ts
+        docsFilePath: src/graphql
+        region: ap-south-1
+        apiId: null
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3
