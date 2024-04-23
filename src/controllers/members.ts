@@ -1,65 +1,75 @@
 import express, { RequestHandler } from "express";
-import {
-  Members,
-  getMember,
-  getAllMembers,
-  createMember,
-  updateMember,
-  deleteMember,
-} from "../models/member";
-import { Member } from "../types";
 
-export const getAllMembersHandler: RequestHandler = (req, res, next) => {
-  const members: Member[] = getAllMembers();
-  if (!members) {
-    res.status(500).json({ message: "No members found" });
+import { Member, CompanyRole, CreateMemberInput } from "../awsApis";
+import awsExport from "../amplifyconfiguration.json";
+import { Amplify } from "aws-amplify";
+import { generateClient } from "aws-amplify/api";
+import { createMember } from "../graphql/mutations";
+import { SignUpInput, signUp } from "aws-amplify/auth";
+import { isValidMember } from "../utils/member-util";
+Amplify.configure(awsExport);
+
+const client = generateClient();
+export const getAllMembersHandler: RequestHandler = (req, res, next) => {};
+
+export const getMemberHandler: RequestHandler = (req, res, next) => {};
+
+export const createMemberHandler: RequestHandler = (req, res, next) => {};
+
+export const updateMemberHandler: RequestHandler = (req, res, next) => {};
+
+export const deleteMemberHandler: RequestHandler = (req, res, next) => {};
+
+export const SignupHandler: RequestHandler = async (req, res, next) => {
+  try {
+    const member: Member = req.body;
+
+    // Check if member object is valid
+    if (!isValidMember(member)) {
+      return res.status(400).json({ message: "Invalid member data" });
+    }
+
+    // Ensure email is in lowercase
+    member.email = member.email.toLowerCase();
+
+    // Sign up the member
+    const signUpDetails: SignUpInput = {
+      username: member.email,
+      password: "Password@1",
+      options: {
+        autoSignIn: true,
+        userAttributes: {
+          email: member.email,
+          name: member.name,
+        },
+      },
+    };
+    const memberSignUpDetails = await signUp(signUpDetails);
+    
+    // Handle sign up success
+    if (memberSignUpDetails) {
+      const newMember = {
+        ...member,
+        id: memberSignUpDetails.userId,
+      };
+
+      // Create the member in the database
+      const createdMember = await client.graphql({
+        query: createMember,
+        variables: {
+          input: newMember,
+        },
+      });
+
+      const newMemberCreated = createdMember.data.createMember;
+      return res.status(201).json({ message: "Sign up Successful", newMemberCreated });
+    } else {
+      // Handle sign up failure
+      return res.status(500).json({ message: "Failed to sign up member" });
+    }
+  } catch (error) {
+    // Handle other errors
+    console.error("SignupHandler Error:", error);
+    return res.status(500).json({ message: "Cannot sign up, please try again later" });
   }
-  res.status(200).json(members);
-};
-
-export const getMemberHandler: RequestHandler = (req, res, next) => {
-  const id:string = req.params.id;
-
-  if (!id) {
-    res.status(400).json({ message: "Member ID is required" });
-  }
-  const member = getMember(id);
-  if (!member) {
-    res.status(500).json({ message: "Member not found" });
-  }
-  res.status(200).json(member);
-};
-
-export const createMemberHandler: RequestHandler = (req, res, next) => {
-  const member: Member = req.body;
-  if (!member) {
-    res.status(400).json({ message: "Member is required" });
-  }
-  createMember(member);
-  res.status(201).json({ message: "Member created successfully", member });
-};
-
-export const updateMemberHandler: RequestHandler = (req, res, next) => {
-
-  const id:string = req.params.id;
-
-  const member:Member = req.body;
-
-  if (!id) {
-    res.status(400).json({ message: "Valid member ID is required" });
-  }
-  if (!member) {
-    res.status(400).json({ message: "Member is required" });
-  }
-  updateMember(id, member);
-  res.status(200).json({ message: "Member updated successfully", member });
-};
-
-export const deleteMemberHandler: RequestHandler = (req, res, next) => {
-  const id = req.params.id;
-  if (!id) {
-    res.status(400).json({ message: "Valid member ID is required" });
-  }
-  deleteMember(id);
-  res.status(200).json({ message: "Member deleted successfully" });
 };
