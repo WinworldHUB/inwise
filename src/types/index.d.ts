@@ -54,3 +54,10 @@ export type Credentials = {
     email: string;
     password: string;
 }
+
+
+export type ChangePasswordRequest = {
+    oldPassword: string,
+    newPassword:string
+  
+  }

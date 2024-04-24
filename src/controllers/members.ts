@@ -12,9 +12,10 @@ import {
   confirmSignUp,
   signIn,
   signUp,
+  updatePassword,
 } from "aws-amplify/auth";
 import { isValidMember } from "../utils/member-util";
-import { Credentials } from "../types";
+import { ChangePasswordRequest, Credentials } from "../types";
 import { getMember, listMembers } from "../graphql/queries";
 Amplify.configure(awsExport);
 
@@ -248,9 +249,14 @@ export const SignInHandler: RequestHandler = async (req, res, next) => {
 
 export const changePasswordHandler: RequestHandler = async (req, res, next) => {
   try {
+    const { oldPassword, newPassword } = req.body as ChangePasswordRequest;
+    if (!oldPassword || !newPassword) {
+      res.status(400).json({ err: "Invalid old Password ornew Password" });
+      return;
+    }
+    const changePassword = await updatePassword({ oldPassword, newPassword });
+    res.status(200).json({ message: "Password changed successfully", changePassword });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Cannot Change Password, please try again later" });
+    res.status(500).json({ err: "Failed to change password", error });
   }
 };

@@ -7,6 +7,7 @@ import {
   deleteMemberHandler,
   SignupHandler,
   SignInHandler,
+  changePasswordHandler,
 } from "../controllers/members";
 
 export const memberRouter = Router();
@@ -16,5 +17,6 @@ memberRouter.get("/:id", getMemberHandler);
 memberRouter.post("/", createMemberHandler);
 memberRouter.post("/signup", SignupHandler);
 memberRouter.post("/signin", SignInHandler);
-memberRouter.put("/:id", updateMemberHandler);
+memberRouter.post ("/change-password", changePasswordHandler);
+memberRouter.put("/:email", updateMemberHandler);
 memberRouter.delete("/:id", deleteMemberHandler);
