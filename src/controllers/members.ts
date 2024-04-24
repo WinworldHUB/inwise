@@ -5,7 +5,7 @@ import awsExport from "../amplifyconfiguration.json";
 import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/api";
 import { createMember } from "../graphql/mutations";
-import { SignInInput, SignUpInput, confirmSignIn, signIn, signUp } from "aws-amplify/auth";
+import { SignInInput, SignUpInput, confirmSignIn, confirmSignUp, signIn, signUp } from "aws-amplify/auth";
 import { isValidMember } from "../utils/member-util";
 import { Credentials } from "../types";
 Amplify.configure(awsExport);
@@ -91,11 +91,10 @@ export const SignInHandler: RequestHandler = async (req, res, next) => {
 
     // Sign in the member
     const memberSignInDetails = await signIn(signInDetails);
-    memberSignInDetails.isSignedIn = true;
-    if (memberSignInDetails.isSignedIn) {
+    if (memberSignInDetails) {
       return res.status(200).json({ message: "Sign in Successful", memberSignInDetails });
     } else {
-      return res.status(500).json({ message: "Failed to sign in member" });
+      return res.status(500).json({ message: "Failed to sign in member", });
     }
 
   } catch (error) {
