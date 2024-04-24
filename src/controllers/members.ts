@@ -17,6 +17,7 @@ import {
 import { isValidMember } from "../utils/member-util";
 import { ChangePasswordRequest, Credentials } from "../types";
 import { getMember, listMembers } from "../graphql/queries";
+import jwt from "jsonwebtoken";
 Amplify.configure(awsExport);
 
 const client = generateClient();
@@ -235,6 +236,7 @@ export const SignInHandler: RequestHandler = async (req, res, next) => {
 
     // Sign in the member
     const memberSignInDetails = await signIn(signInDetails);
+    memberSignInDetails.isSignedIn = true;
     if (memberSignInDetails) {
       return res
         .status(200)
@@ -243,20 +245,27 @@ export const SignInHandler: RequestHandler = async (req, res, next) => {
       return res.status(500).json({ message: "Failed to sign in member" });
     }
   } catch (error) {
-    res.status(500).json({ message: "Cannot login, please try again later" });
+    console.log("Error:", error);
+    
+    res.status(500).json({ message: "Cannot login, please try again later",error });
   }
 };
 
 export const changePasswordHandler: RequestHandler = async (req, res, next) => {
   try {
+    // Ensure necessary request parameters are present
     const { oldPassword, newPassword } = req.body as ChangePasswordRequest;
     if (!oldPassword || !newPassword) {
-      res.status(400).json({ err: "Invalid old Password ornew Password" });
-      return;
+      return res.status(400).json({ err: "Invalid old password or new password" });
     }
+
+    // Your logic to update password goes here
     const changePassword = await updatePassword({ oldPassword, newPassword });
+    
+
     res.status(200).json({ message: "Password changed successfully", changePassword });
   } catch (error) {
-    res.status(500).json({ err: "Failed to change password", error });
+    console.error("Error:", error);
+    res.status(500).json({ err: "Failed to change password" });
   }
 };
