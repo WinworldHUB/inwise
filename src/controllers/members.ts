@@ -5,8 +5,9 @@ import awsExport from "../amplifyconfiguration.json";
 import { Amplify } from "aws-amplify";
 import { generateClient } from "aws-amplify/api";
 import { createMember } from "../graphql/mutations";
-import { SignUpInput, signUp } from "aws-amplify/auth";
+import { SignInInput, SignUpInput, confirmSignIn, signIn, signUp } from "aws-amplify/auth";
 import { isValidMember } from "../utils/member-util";
+import { Credentials } from "../types";
 Amplify.configure(awsExport);
 
 const client = generateClient();
@@ -45,7 +46,7 @@ export const SignupHandler: RequestHandler = async (req, res, next) => {
       },
     };
     const memberSignUpDetails = await signUp(signUpDetails);
-    
+
     // Handle sign up success
     if (memberSignUpDetails) {
       const newMember = {
@@ -62,14 +63,42 @@ export const SignupHandler: RequestHandler = async (req, res, next) => {
       });
 
       const newMemberCreated = createdMember.data.createMember;
-      return res.status(201).json({ message: "Sign up Successful", newMemberCreated });
+      return res
+        .status(201)
+        .json({ message: "Sign up Successful", newMemberCreated });
     } else {
       // Handle sign up failure
       return res.status(500).json({ message: "Failed to sign up member" });
     }
   } catch (error) {
-    // Handle other errors
-    console.error("SignupHandler Error:", error);
-    return res.status(500).json({ message: "Cannot sign up, please try again later" });
+    return res
+      .status(500)
+      .json({ message: "Cannot sign up, please try again later" });
+  }
+};
+
+export const SignInHandler: RequestHandler = async (req, res, next) => {
+  try {
+    const { email, password }: Credentials = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "Invalid credentials" });
+    }
+    const signInDetails: SignInInput = {
+      username: email.toLowerCase(),
+      password,
+    };
+
+    // Sign in the member
+    const memberSignInDetails = await signIn(signInDetails);
+    memberSignInDetails.isSignedIn = true;
+    if (memberSignInDetails.isSignedIn) {
+      return res.status(200).json({ message: "Sign in Successful", memberSignInDetails });
+    } else {
+      return res.status(500).json({ message: "Failed to sign in member" });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: "Cannot login, please try again later" });
   }
 };

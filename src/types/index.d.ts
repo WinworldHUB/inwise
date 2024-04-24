@@ -1,3 +1,5 @@
+/* start to be removed */
+
 export type Member = {
     id: string;
     name: string;
@@ -44,4 +46,11 @@ export type BankDetails = {
     memberId: string;
     bankName: string;
     accountNumber: string;
+}
+
+/* end to be removed */
+
+export type Credentials = {
+    email: string;
+    password: string;
 }
